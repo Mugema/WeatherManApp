@@ -1,0 +1,25 @@
+package com.example.weatherman.presentation.models
+
+data class Hour(
+    val chanceOfRain: Int,
+    val chanceOfSnow: Int,
+    val cloud: Int,
+    val condition: Condition,
+    val feelsLike: Double,
+    val windStrength: Double,
+    val humidity: Int,
+    val is_day: Int,
+    val precipitationInInches: Double,
+    val pressureInInches: Double,
+    val snowInCm: Double,
+    val temperatureInC: Double,
+    val time: String,
+    val uv: Double,
+    val visualInKm: Double,
+    val willItRain: Int,
+    val willItSnow: Int,
+    val windDegree: Int,
+    val windDirection: String,
+    val windInKph: Double,
+    val windChill: Double,
+)
