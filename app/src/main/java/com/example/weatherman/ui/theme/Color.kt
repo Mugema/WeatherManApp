@@ -5,6 +5,8 @@ val baseColor = Color(0xD27DFF83)
 val primaryColor = Color(85, 145, 127).copy(green = 3f)
 val accentColor=Color(255, 193, 0)
 
+val accent=Color(0xD27DFF83)
+
 val primaryLight = Color(0xFF2A638B)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFCCE5FF)

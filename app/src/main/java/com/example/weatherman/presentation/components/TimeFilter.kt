@@ -1,6 +1,7 @@
 package com.example.weatherman.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -25,66 +26,75 @@ import com.example.weatherman.ui.theme.WeatherManTheme
 import com.example.weatherman.ui.theme.primaryColor
 
 @Composable
-fun <T> TimeRoot (modifier: Modifier = Modifier,model:T) {
-
-}
-
-@Composable
-fun Time(modifier: Modifier = Modifier) {
+fun Time(
+    modifier: Modifier = Modifier,
+    onTodayClicked:()->Unit={},
+    onTomorrowClicked:() ->Unit={},
+    onForeCastClicked:()->Unit={},
+    selected: SelectedScreen
+) {
     Row(
-        modifier = Modifier
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
             .width(IntrinsicSize.Max)
             .fillMaxWidth()
             .padding(top = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-
     ) {
         Spacer(modifier = Modifier.width(8.dp))
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.shadow(4.dp, RoundedCornerShape(40),true,Color.Black)
+            modifier = Modifier
+                .shadow(4.dp, RoundedCornerShape(40))
                 .clip(RoundedCornerShape(40))
-                .background(primaryColor)
+                .background(if (selected.todayScreen) primaryColor else Color.White)
+                .clickable { onTodayClicked() }
                 .padding(start = 8.dp, end = 8.dp)
         ) {
             Text(stringResource(R.string.today),
             fontSize = 16.sp,
-            modifier = Modifier.padding(12.dp))  }
+            modifier = Modifier.padding(12.dp))
+        }
+
         Spacer(modifier = Modifier.width(8.dp))
 
         Box(contentAlignment = Alignment.Center,
             modifier = Modifier
                 .shadow(4.dp, RoundedCornerShape(40),true,Color.Black)
                 .clip(RoundedCornerShape(40))
-                .background(Color.White)
+                .background(if (selected.tomorrowScreen) primaryColor else Color.White)
+                .clickable { onTomorrowClicked() }
                 .padding(start = 8.dp, end = 8.dp)
-
         ) { Text(stringResource(R.string.tomorrow),
             fontSize = 16.sp,
-            modifier = Modifier.padding(12.dp)) }
+            modifier = Modifier.padding(12.dp))
+        }
+
         Spacer(modifier = Modifier.width(8.dp))
 
         Box(contentAlignment = Alignment.Center,
             modifier = Modifier
                 .shadow(4.dp, RoundedCornerShape(40),true,Color.Black)
                 .clip(RoundedCornerShape(40))
-                .background(Color.White)
+                .background(if (selected.foreCastScreen) primaryColor else Color.White)
+                .clickable { onForeCastClicked() }
                 .padding(start = 8.dp, end = 8.dp)
         ) { Text(stringResource(R.string.three_Days),
             fontSize = 16.sp,
-            modifier = Modifier.padding(12.dp))  }
-        Spacer(modifier = Modifier.width(8.dp))
+            modifier = Modifier.padding(12.dp))
+        }
     }
-
 }
-
-//0a5d02c04b8fb59c9ae14cf428f58e2c9c27cb7fc9098df1fb4290900c6e2e59bcd594dc6202e3a52e33831a22a238ae81cd5ec4aac5087ee38a3fc69d8ec3ef7f7346ce82fafbbd7327de8066988a506ee3dcd1f6686168e92e9a5f3c4e83cd3bb4c0a9bf5fedc68c5147178ca0c568
-//761b62b9-9f95-4312-942a-76a7945d7c9b
 
 @Preview
 @Composable
 private fun TimePreview() {
     WeatherManTheme {
-        Time()
+        Time(selected = SelectedScreen(false,false,true))
     }
 }
+
+data class SelectedScreen(
+    val todayScreen:Boolean = true,
+    val tomorrowScreen: Boolean = false,
+    val foreCastScreen: Boolean = false
+)

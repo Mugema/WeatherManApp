@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherman.domain.Result
 import com.example.weatherman.domain.WeatherRepository
-import com.example.weatherman.domain.mapper.toAirQualityUi
+import com.example.weatherman.presentation.mapper.toAirQualityUi
 import com.example.weatherman.presentation.models.AirQualityUi
 import com.example.weatherman.presentation.models.Pressure
 import com.example.weatherman.presentation.models.Temperature

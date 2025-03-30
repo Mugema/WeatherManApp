@@ -20,30 +20,24 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weatherman.domain.mapper.toAirQualityUi
+import com.example.weatherman.presentation.mapper.toAirQualityUi
 import com.example.weatherman.presentation.models.AirQualityUi
 import com.example.weatherman.ui.theme.WeatherManTheme
-import com.example.weatherman.ui.theme.primaryColor
 
 @Composable
 fun AirQuality(modifier: Modifier = Modifier,airQualityUi: AirQualityUi) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .shadow(
-                4.dp,
-                RoundedCornerShape(10),
-                true,
-                Color.Black,
-                Color.Gray
-            )
+            .shadow(4.dp, RoundedCornerShape(10), true)
             .clip(RoundedCornerShape(10))
             .fillMaxWidth()
-            .background(primaryColor)
+            .background(Color.White)
             .padding(16.dp)
     ) {
         Text("Air Quality",
@@ -78,8 +72,10 @@ fun AirQuality(modifier: Modifier = Modifier,airQualityUi: AirQualityUi) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ){
-                    Box(modifier.clip(CircleShape)
-                        .size(18.dp).drawWithContent { drawRect(Color.Blue) })
+                    Box(modifier
+                        .clip(CircleShape)
+                        .size(18.dp)
+                        .drawWithContent { drawRect(Color.Blue) })
                     Text(" Ozone")
                 }
 
@@ -87,8 +83,10 @@ fun AirQuality(modifier: Modifier = Modifier,airQualityUi: AirQualityUi) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ){
-                    Box(modifier.clip(CircleShape)
-                        .size(18.dp).drawWithContent { drawRect(Color.Red) })
+                    Box(modifier
+                        .clip(CircleShape)
+                        .size(18.dp)
+                        .drawWithContent { drawRect(Color.Red) })
                     Text(" Nitrogen dioxide")
                 }
 
@@ -96,8 +94,10 @@ fun AirQuality(modifier: Modifier = Modifier,airQualityUi: AirQualityUi) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ){
-                    Box(modifier.clip(CircleShape)
-                        .size(18.dp).drawWithContent { drawRect(Color.Yellow) })
+                    Box(modifier
+                        .clip(CircleShape)
+                        .size(18.dp)
+                        .drawWithContent { drawRect(Color.Yellow) })
                     Text(" Sulphur dioxide")
                 }
 
@@ -106,8 +106,10 @@ fun AirQuality(modifier: Modifier = Modifier,airQualityUi: AirQualityUi) {
                     modifier = Modifier.fillMaxWidth()
                 ){
                     Box(
-                        modifier.clip(CircleShape)
-                            .size(18.dp).drawWithContent { drawRect(Color.Green.copy(green = 0.3f)) }
+                        modifier
+                            .clip(CircleShape)
+                            .size(18.dp)
+                            .drawWithContent { drawRect(Color.Green.copy(green = 0.3f)) }
                     )
                     Text(" Carbon dioxide")
                 }
@@ -115,6 +117,16 @@ fun AirQuality(modifier: Modifier = Modifier,airQualityUi: AirQualityUi) {
         }
 
     }
+}
+
+@Preview
+@Composable
+private fun trial() {
+    Box(
+        modifier = Modifier.size(140.dp)
+            .background(SolidColor(Color.Red))
+    )
+
 }
 
 val air = com.example.weatherman.domain.models.AirQuality(

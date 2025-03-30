@@ -1,4 +1,4 @@
-package com.example.weatherman.domain.mapper
+package com.example.weatherman.presentation.mapper
 
 import com.example.weatherman.domain.models.AirQuality
 import com.example.weatherman.presentation.models.AirQualityUi

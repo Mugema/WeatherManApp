@@ -1,5 +1,6 @@
 package com.example.weatherman.presentation.homeScreen.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +24,6 @@ import com.example.weatherman.presentation.homeScreen.HomeScreenViewModel
 import com.example.weatherman.presentation.models.Weather
 import com.example.weatherman.presentation.models.Wind
 import com.example.weatherman.ui.theme.WeatherManTheme
-import com.example.weatherman.ui.theme.primaryColor
 
 @Composable
 fun DetailsCardRoot(modifier: Modifier = Modifier,viewmodel:HomeScreenViewModel) {
@@ -39,13 +38,14 @@ fun DetailsCard(modifier: Modifier = Modifier, state:Weather, title:String) {
         modifier=modifier
             .shadow(4.dp, RoundedCornerShape(10), true)
             .clip(RoundedCornerShape(10))
-            .background(primaryColor)
+            .background(Color.White)
             .padding(16.dp)
     ) {
-        Icon(painter = painterResource(state.icon),
+        Image(painter = painterResource(state.icon),
             contentDescription = null,
             modifier=Modifier
-                .size(50.dp)
+                .shadow(4.dp, CircleShape, true)
+                .size(60.dp)
                 .clip(CircleShape)
                 .background(Color.White)
                 .padding(4.dp)

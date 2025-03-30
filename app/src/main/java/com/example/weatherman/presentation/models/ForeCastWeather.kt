@@ -2,7 +2,9 @@ package com.example.weatherman.presentation.models
 
 
 data class ForeCastWeather(
-    val current: Current,
-    val forecast: Forecast,
-    val location: Location
+    val date: String,
+    val localLocation: Location,
+    val astro: Astro,
+    val day: Day,
+    val hours:List<Hour>
 )

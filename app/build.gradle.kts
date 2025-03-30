@@ -86,6 +86,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.lifecycle.viewmodel.compose.android)
+    implementation(libs.androidx.hilt.navigation.compose)
 
 
 }

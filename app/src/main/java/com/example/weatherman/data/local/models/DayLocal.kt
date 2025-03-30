@@ -1,12 +1,12 @@
-package com.example.weatherman.domain.models
+package com.example.weatherman.data.local.models
 
 import androidx.room.Embedded
 
-data class Day(
+data class DayLocal(
     val avgHumidity: Int,
     val avgTemperature: Double,
     val avgVisibility: Double,
-    @Embedded val condition: Condition,
+    @Embedded val condition: ConditionLocal,
     val chanceOfRain: Int,
     val chanceOfSnow: Int,
     val willItRain: Boolean,

@@ -19,21 +19,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weatherman.ui.theme.primaryColor
 
 @Composable
 fun ExpectCard(modifier: Modifier = Modifier,expectedState:ExpectedState) {
     Column(
         modifier = modifier
+            .shadow(4.dp, RoundedCornerShape(10),true)
             .height(150.dp)
             .padding(2.dp)
             .clip(RoundedCornerShape(10))
-            .background(primaryColor)
+            .background(Color.White)
             .fillMaxWidth()
 
 
@@ -64,7 +66,6 @@ fun ExpectCard(modifier: Modifier = Modifier,expectedState:ExpectedState) {
     }
 
 }
-
 data class ExpectedState(
     val maxTemp:String,
     val minTemp:String,

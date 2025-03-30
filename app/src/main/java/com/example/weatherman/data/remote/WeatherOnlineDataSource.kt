@@ -1,15 +1,12 @@
 package com.example.weatherman.data.remote
 
-import com.example.weatherman.data.mapper.toCurrentWeather
-import com.example.weatherman.data.mapper.toForeCastWeather
+import com.example.weatherman.data.tempMapper.toForeCastWeather
 import com.example.weatherman.data.remote.dto.CurrentWeatherDto
 import com.example.weatherman.data.remote.dto.ForeCastWeatherDto
 import com.example.weatherman.data.remote.util.safeCall
 import com.example.weatherman.domain.DataErrors
 import com.example.weatherman.domain.Result
 import com.example.weatherman.domain.map
-import com.example.weatherman.domain.models.CurrentWeather
-import com.example.weatherman.domain.models.ForeCastWeather
 import io.ktor.client.HttpClient
 import io.ktor.client.request.parameter
 import io.ktor.client.request.request
@@ -25,7 +22,7 @@ class WeatherOnlineDataSource @Inject constructor(
     override suspend fun getCurrentWeather(
         location: String,
         airQuality: String
-    ):Result<CurrentWeather,DataErrors.RemoteError>
+    ):Result<CurrentWeatherDto,DataErrors.RemoteError>
     {
         return safeCall<CurrentWeatherDto> {
             client.request {
@@ -35,8 +32,6 @@ class WeatherOnlineDataSource @Inject constructor(
                 parameter("aqi",airQuality)
                 method= HttpMethod.Get
             }
-        }.map { response ->
-            response.toCurrentWeather()
         }
     }
 
@@ -44,7 +39,7 @@ class WeatherOnlineDataSource @Inject constructor(
         location: String,
         airQuality: String,
         days: Int
-    ): Result<ForeCastWeather, DataErrors.RemoteError> {
+    ): Result<ForeCastWeatherDto, DataErrors.RemoteError> {
         return safeCall<ForeCastWeatherDto> {
             client.request{
                 url(WeatherRoutes.FORECAST_WEATHER)
@@ -54,8 +49,6 @@ class WeatherOnlineDataSource @Inject constructor(
                 parameter("days",days)
                 method= HttpMethod.Get
             }
-        }.map { response ->
-            response.toForeCastWeather()
         }
     }
 }

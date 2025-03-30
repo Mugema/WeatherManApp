@@ -1,5 +1,7 @@
 package com.example.weatherman.data.remote
 
+import com.example.weatherman.data.remote.dto.CurrentWeatherDto
+import com.example.weatherman.data.remote.dto.ForeCastWeatherDto
 import com.example.weatherman.domain.DataErrors
 import com.example.weatherman.domain.Result
 import com.example.weatherman.domain.models.CurrentWeather
@@ -10,12 +12,12 @@ interface WeatherService {
     suspend fun getCurrentWeather(
         location:String,
         airQuality: String
-    ):Result<CurrentWeather,DataErrors.RemoteError>
+    ):Result<CurrentWeatherDto,DataErrors.RemoteError>
 
     suspend fun getForeCast(
         location: String,
         airQuality: String = "no",
         days: Int = 1
-    ):Result<ForeCastWeather,DataErrors.RemoteError>
+    ):Result<ForeCastWeatherDto,DataErrors.RemoteError>
 
 }

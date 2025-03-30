@@ -1,8 +1,15 @@
 package com.example.weatherman.di
 
+import android.content.Context
+import androidx.room.Room
+import com.example.weatherman.data.local.WeatherDb
+import com.example.weatherman.data.local.dao.CurrentWeatherDao
+import com.example.weatherman.data.local.dao.ForecastDao
+import com.example.weatherman.data.local.dao.HourDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -21,14 +28,13 @@ object ProvidesModule {
 
     @Provides
     @Singleton
-    fun ProvidesKtorClient():HttpClient{
+    fun providesKtorClient():HttpClient{
         val client= HttpClient(Android) {
             install(ContentNegotiation) {
                 json(
                     Json {
                         prettyPrint=true
                         isLenient=true
-//                        ignoreUnknownKeys=true
                     }
                 )
             }
@@ -41,7 +47,34 @@ object ProvidesModule {
 
     @Provides
     @Singleton
-    fun ProvidesCoroutine():CoroutineDispatcher{
+    fun providesCoroutine():CoroutineDispatcher{
         return Dispatchers.IO
     }
+
+    @Provides
+    @Singleton
+    fun providesWeatherDatabase(@ApplicationContext context: Context): WeatherDb{
+        return Room
+            .databaseBuilder(context, WeatherDb::class.java,"weatherDb")
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun providesCurrentWeatherDao(database: WeatherDb): CurrentWeatherDao{
+        return  database.getCurrentWeatherDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providesForecastDao(database: WeatherDb):ForecastDao{
+        return database.getForecastDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providesHourDao(database: WeatherDb):HourDao{
+        return database.getHourDao()
+    }
+
 }

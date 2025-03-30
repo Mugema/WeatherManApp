@@ -2,101 +2,168 @@ package com.example.weatherman.presentation
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.weatherman.ui.theme.WeatherManTheme
 
 @Composable
-fun Trial() {
+fun Trial(path:List<DataPoints>) {
     // Create ScrollState to own it and be able to control scroll behaviour of scrollable Row below
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
-    val path = Path()
+    val textMeasure = rememberTextMeasurer()
 
-    Canvas(modifier = Modifier.size(200.dp)
-        .background(Color.White)) {
-        val radius=this.size.width/2
-        path.arcTo(
-            Rect(
-                center.x,
-                center.y,
-                center.x+this.size.width/2,
-                center.y+this.size.width/2
-            ),
-            startAngleDegrees = 270f,
-            sweepAngleDegrees = -180f,
-            forceMoveTo = false
-        )
-        path.arcTo(
-            Rect(
-                center.x - radius / 2,
-                center.y,
-                center.x + radius / 2,
-                center.y + radius
-            ),
-            270f,
-            -180f,
-            false
-        )
-
-        drawPath(path,Color.Black)
-
-    }
-
-
-
-
-
-//    Canvas(modifier = Modifier.size(150.dp)
-//        .background(Color.White)) {
-//        val radius = this.size.minDimension/2
-//        path.arcTo(
-//            Rect(0f, 0f,center.x+radius,center.y+radius),
-//            startAngleDegrees = 90f,
-//            sweepAngleDegrees = 180f,
-//            forceMoveTo = false
+//    Canvas(modifier = Modifier
+//        .size(200.dp)
+//        .background(Color.White)
+//    ) {
+//        drawRect(color = Color.LightGray,
+//            topLeft = Offset(100f,100f),
+//            size = Size(500f,500f)
 //        )
-//        path.arcTo(
-//            Rect(center.x-radius /2, 0f,center.x+radius /2,center.y),
-//            startAngleDegrees = 270f,
-//            sweepAngleDegrees = 180f,
-//            forceMoveTo = false
+//        val measured = path.map { textMeasure.measure(it.xLabel, style = TextStyle.Default.copy(fontSize = 10.sp)) }
 //
-//        )
 //
-//        path.arcTo(
-//            Rect(
-//                center.x - radius / 2,
-//                center.y,
-//                center.x + radius / 2,
-//                center.y + radius
-//            ),
-//            270f,
-//            -180f,
-//            false
-//        )
+//        measured.forEachIndexed { index, textLayoutResult ->
+//            val i = index+1
+//            drawText(
+//                textLayoutResult,
+//                topLeft = Offset(100f*i,600f))
+//        }
 //
-//        drawPath(path,Color.Black)
+//        val yMeasured =  path.map { textMeasure.measure(it.yLabel,style = TextStyle.Default.copy(fontSize = 10.sp)) }
+//
+//        yMeasured.forEachIndexed { index, textLayoutResult ->
+//            val i = index+1
+//            drawText(
+//                textLayoutResult,
+//                topLeft = Offset(
+//                    100f-textLayoutResult.size.width,
+//                    100f*i
+//                )
+//            )
+//        }
+//
+//        val ee = Path();
+//        path.forEach {
+//            ee.lineTo(it.xLabel.toFloat(),it.yLabelValue.toFloat())
+//        }
+//        ee.close()
+//        drawPath(ee,Color.Black)
+//
 //    }
 
+    Canvas(
+        modifier = Modifier.size(500.dp).background(Color.White)
+    ) {
+        val path = Path()
+
+        // Move to the starting point
+        path.moveTo(450f, size.height-100f)
+
+        // Draw a line to another point
+        path.lineTo(700f, 50f)
+
+        // Draw a line to another point
+        path.lineTo(200f, 200f)
 
 
+
+
+        // Draw the path
+        drawPath(
+            path = path,
+            color = Color.Blue,
+            style = Stroke(width = 5.dp.toPx(),)
+        )
+    }
 }
+data class DataPoints(
+    val xLabel:String,
+    val yLabel:String,
+    val yLabelValue:Int
+)
 
 @Preview(device = Devices.PIXEL_7_PRO)
 @Composable
 private fun PreviewTrial() {
+    val path= mutableListOf<DataPoints>()
+    for(i in 0..6){
+        path.add(
+            DataPoints(
+            xLabel = "$i",
+            yLabel = "${i * 5}",
+            yLabelValue = i*5)
+        )
+    }
     WeatherManTheme {
-        Trial()
+        Trial(path=path)
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//val radius=this.size.width/2
+//path.arcTo(
+//Rect(
+//center.x,
+//center.y,
+//center.x+this.size.width/2,
+//center.y+this.size.width/2
+//),
+//startAngleDegrees = 270f,
+//sweepAngleDegrees = -180f,
+//forceMoveTo = false
+//)
+//path.arcTo(
+//Rect(
+//center.x - radius / 2,
+//center.y,
+//center.x + radius / 2,
+//center.y + radius
+//),
+//270f,
+//-180f,
+//false
+//)
+//
+//drawPath(path,Color.Black)

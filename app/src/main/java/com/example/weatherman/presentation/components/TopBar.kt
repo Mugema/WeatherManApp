@@ -17,12 +17,25 @@ fun TopBarRoot(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier,location:String,isOnline:Boolean) {
+fun TopBar(
+    modifier: Modifier = Modifier,
+    location: String,
+    isOnline: Boolean,
+    toHomeScreen:()->Unit={},
+    toTomorrowScreen:()->Unit={},
+    toForeCastScreen:()->Unit={},
+    selected: SelectedScreen = SelectedScreen()
+) {
     Column(modifier =modifier.background(Color.LightGray.copy(alpha = 1f, green = 1f))
     ){
         ActionBar(location = location, isOnline = isOnline)
         Spacer(Modifier.height(8.dp))
-        Time()
+        Time(
+            selected = selected,
+            onTodayClicked = toHomeScreen,
+            onForeCastClicked = toForeCastScreen,
+            onTomorrowClicked = toTomorrowScreen
+        )
         Spacer(modifier = Modifier.height(16.dp))
     }
 

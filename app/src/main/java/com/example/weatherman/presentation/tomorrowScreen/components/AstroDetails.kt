@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import com.example.weatherman.R
 import com.example.weatherman.presentation.models.AstroState
 import com.example.weatherman.ui.theme.WeatherManTheme
-import com.example.weatherman.ui.theme.primaryColor
 
 @Composable
 fun AstroDetails(
@@ -35,35 +34,26 @@ fun AstroDetails(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .shadow(
-                elevation = 30.dp,
-                shape = RoundedCornerShape(10),
-                clip = false,
-                ambientColor = Color.Black,
-                spotColor = Color.Yellow
-            )
+            .shadow(4.dp, RoundedCornerShape(10), true)
             .clip(RoundedCornerShape(10))
-            .background(primaryColor)
+            .background(Color.White)
             .padding(8.dp)
             .height(64.dp)
-
     ) {
+        Image(
+            painter = painterResource(astroState.image),
+            contentDescription = null,
+            modifier = Modifier
+                .padding(4.dp)
+                .height(60.dp)
+
+        )
+
+        Spacer(modifier=Modifier.width(2.dp))
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(4.dp)
         ) {
-            Image(
-                painter = painterResource(astroState.image),
-                contentDescription = null,
-                modifier = Modifier
-                    .height(60.dp)
-                    .padding(4.dp)
-            )
-        }
-        Spacer(modifier=Modifier.width(4.dp))
-        Column(
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Text(astroState.event, fontSize = 20.sp )
+            Text(astroState.event, fontSize = 16.sp )
             Text(astroState.time)
         }
     }
