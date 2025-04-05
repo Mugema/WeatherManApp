@@ -25,7 +25,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -87,6 +87,9 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.viewmodel.compose.android)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    //dataStore
+    implementation(libs.androidx.datastore.preferences)
 
 
 }

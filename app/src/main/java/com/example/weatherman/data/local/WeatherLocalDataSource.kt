@@ -21,7 +21,8 @@ class WeatherLocalDataSource @Inject constructor(
    private val currentWeatherDao: CurrentWeatherDao,
    private val foreCastDao: ForecastDao,
    private val hourDao: HourDao,
-   private val ioDispatcher: CoroutineDispatcher
+   private val ioDispatcher: CoroutineDispatcher,
+   private val dataStore:PrefUtil
 
 ) {
    suspend fun updateCurrentWeather(currentWeather:CurrentWeatherLocal){
@@ -29,26 +30,50 @@ class WeatherLocalDataSource @Inject constructor(
          currentWeatherDao.updateCurrentWeather(currentWeather)
       }
    }
-   suspend fun getCurrentWeather():CurrentWeather{
-      return currentWeatherDao.getCurrentWeather().toCurrentWeather()
+   suspend fun getCurrentWeather(location: String):CurrentWeather?{
+      val dbReturn:CurrentWeather
+      try {
+          dbReturn= currentWeatherDao.getCurrentWeather(location).toCurrentWeather()
+      } catch (error:NullPointerException){
+         return null
+      }
+      return dbReturn
    }
 
    suspend fun addForecast(forecastLocal: ForecastLocal){
-      foreCastDao.addForecast(forecastLocal)
+      withContext(ioDispatcher){
+         foreCastDao.addForecast(forecastLocal)
+      }
    }
 
    suspend fun addForecastHours(hours:List<HourLocal>){
-      hourDao.addHours(hours)
+      withContext(ioDispatcher){
+         hourDao.addHours(hours)
+      }
    }
 
    private suspend fun getHours(date:String):List<Hour>{
       return hourDao.getHours(date).map { hour-> hour.toHour()}
    }
 
-   suspend fun getWeatherForecast(): ForeCastWeather{
-      val forecast = foreCastDao.getForeCast().map { entry ->
-        entry.key.toForecastWeather(entry.value.map { it.toHour() })
+   suspend fun getWeatherForecast(location:String): ForeCastWeather?{
+      val forecast:List<ForeCastWeather>
+      try {
+         forecast= foreCastDao.getForeCast(location).map { entry ->
+            entry.key.toForecastWeather(entry.value.map { it.toHour() })
+         }
+      } catch (error:NullPointerException){
+         return null
       }
       return forecast.first()
+   }
+
+   suspend fun getCurrentLocation(key:String="currentLocation"):String? {
+      return dataStore.getLocation(key)
+
+   }
+   suspend fun addLocation(key:String="currentLocation",location:String){
+      dataStore.addLocation(key,location)
+
    }
 }

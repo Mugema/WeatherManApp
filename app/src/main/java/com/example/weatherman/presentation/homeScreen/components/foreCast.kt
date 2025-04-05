@@ -23,16 +23,16 @@ import androidx.compose.ui.unit.sp
 import com.example.weatherman.R
 import com.example.weatherman.ui.theme.WeatherManTheme
 
-data class fore(
+data class TimeForecast(
     val time:Int,
     val icon:Int,
     val temp:Int
 )
 
-val dd = fore(10,R.drawable.sun_1_,13)
+val dd = TimeForecast(10,R.drawable.sun_1_,13)
 
 @Composable
-fun ForeCast(modifier: Modifier = Modifier,state: fore) {
+fun ForeCast(modifier: Modifier = Modifier,state: TimeForecast) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

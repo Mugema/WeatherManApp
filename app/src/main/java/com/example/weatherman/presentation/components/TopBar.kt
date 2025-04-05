@@ -12,11 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.example.weatherman.ui.theme.WeatherManTheme
 
 @Composable
-fun TopBarRoot(modifier: Modifier = Modifier) {
-
-}
-
-@Composable
 fun TopBar(
     modifier: Modifier = Modifier,
     location: String,
@@ -24,11 +19,16 @@ fun TopBar(
     toHomeScreen:()->Unit={},
     toTomorrowScreen:()->Unit={},
     toForeCastScreen:()->Unit={},
-    selected: SelectedScreen = SelectedScreen()
+    selected: SelectedScreen = SelectedScreen(),
+    onAction:(OnAction)->Unit
 ) {
     Column(modifier =modifier.background(Color.LightGray.copy(alpha = 1f, green = 1f))
     ){
-        ActionBar(location = location, isOnline = isOnline)
+        ActionBar(
+            location = location,
+            isOnline = isOnline,
+            onAction = onAction
+        )
         Spacer(Modifier.height(8.dp))
         Time(
             selected = selected,
@@ -36,7 +36,7 @@ fun TopBar(
             onForeCastClicked = toForeCastScreen,
             onTomorrowClicked = toTomorrowScreen
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
     }
 
 }
@@ -44,6 +44,6 @@ fun TopBar(
 @Preview
 @Composable
 private fun TopBarPreview() {
-    WeatherManTheme { TopBar(location = "Washington,USA", isOnline = true) }
+    WeatherManTheme { TopBar(location = "Washington,USA", isOnline = true){} }
 
 }

@@ -1,4 +1,4 @@
-package com.example.weatherman.presentation.tenDayScreen
+package com.example.weatherman.presentation.forecastScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,9 +15,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.weatherman.presentation.components.OnAction
 import com.example.weatherman.presentation.components.SelectedScreen
 import com.example.weatherman.presentation.components.TopBar
-import com.example.weatherman.presentation.tenDayScreen.components.ForecastDay
+import com.example.weatherman.presentation.forecastScreen.components.ForecastDay
 import com.example.weatherman.ui.theme.WeatherManTheme
 
 @Composable
@@ -25,11 +26,12 @@ fun ForeCastScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: ForeCastScreenViewModel= hiltViewModel(),
     navigateToTomorrowScreen: ()->Unit={},
-    navigateToHomeScreen: () -> Unit={}
+    navigateToHomeScreen: () -> Unit={},
 ) {
     ForeCastScreen(
         navigateToTomorrowScreen = navigateToTomorrowScreen,
-        navigateToHomeScreen = navigateToHomeScreen
+        navigateToHomeScreen = navigateToHomeScreen,
+        onAction = viewModel::actionBarEvent,
     )
 }
 
@@ -38,17 +40,21 @@ fun ForeCastScreen(
     modifier: Modifier = Modifier,
     navigateToTomorrowScreen: ()->Unit={},
     navigateToHomeScreen: () -> Unit={},
+    onAction:(OnAction)->Unit,
+   // state:
 ) {
     Column(
         modifier=modifier.fillMaxSize()
             .background(Color.White)
     ) {
         TopBar(
-            location = "Kampala,Uganda",
             isOnline = false,
             toTomorrowScreen = navigateToTomorrowScreen,
             toHomeScreen = navigateToHomeScreen,
-            selected = SelectedScreen(false,false,true)
+            selected = SelectedScreen(false, false, true),
+            onAction = onAction,
+            location = ""
+
         )
         Spacer(modifier=Modifier.height(4.dp))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -65,6 +71,6 @@ fun ForeCastScreen(
 @Composable
 fun PreviewForecastScreen(){
     WeatherManTheme {
-        ForeCastScreen(){}
+        ForeCastScreen( onAction = {})
     }
 }

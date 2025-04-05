@@ -1,9 +1,9 @@
 package com.example.weatherman.data.repository
 
+import android.util.Log
 import com.example.weatherman.data.local.WeatherLocalDataSource
 import com.example.weatherman.data.mapper.toCurrentWeatherLocal
 import com.example.weatherman.data.mapper.toForecastLocal
-import com.example.weatherman.data.mapper.toHourLocal
 import com.example.weatherman.data.remote.WeatherOnlineDataSource
 import com.example.weatherman.data.remote.dto.CurrentWeatherDto
 import com.example.weatherman.data.remote.dto.ForeCastWeatherDto
@@ -26,37 +26,58 @@ class WeatherRepositoryImplementation @Inject constructor(
 
 
     override suspend fun getCurrentWeather(location:String): Flow<Result<CurrentWeather, DataErrors.RemoteError>> {
-        val response = weatherRemoteDataSource.getCurrentWeather(location=location,airQuality = "yes")
-        when(response){
-            is Result.Error -> {
-                return flow {
-                    emit(response)
-                }.flowOn(ioDispatcher)
+        Log.d("RepoImpl","Beginning getCurrentWeather")
+        val local = weatherLocalDataSource.getCurrentWeather(location)
+        Log.d("RepoImpl",local.toString())
+        if (local == null) {
+            val response =
+                weatherRemoteDataSource.getCurrentWeather(location = location, airQuality = "yes")
+            Log.d("imp",response.toString())
+            when (response) {
+                is Result.Error -> {
+                    Log.d("imp","Error")
+                    return flow { emit(response) }.flowOn(ioDispatcher)
+                }
+
+                is Result.Success -> {
+                    Log.d("impl","Success")
+                    dataSynchronization(currentWeatherDto = response.data)
+                    val remote = weatherLocalDataSource.getCurrentWeather(location)
+                    Log.d("Local value ->","$remote")
+                    return flow{ emit(Result.Success(remote!!)) }.flowOn(ioDispatcher)
+                }
             }
-            is Result.Success -> {
-                dataSynchronization(response.data)
-                return flow {
-                    emit(Result.Success(weatherLocalDataSource.getCurrentWeather()))
-                }.flowOn(ioDispatcher)
-            }
+        }
+        else{
+            return flow { emit(Result.Success(local)) }.flowOn(ioDispatcher)
         }
     }
 
     override suspend fun getForeCastWeather(location: String): Flow<Result<ForeCastWeather, DataErrors.RemoteError>> {
-        val response = weatherRemoteDataSource.getForeCast(location,"no")
-        when(response){
-            is Result.Error -> {
-                return flow {
-                    emit(response)
-                }.flowOn(ioDispatcher)
+        var localData = weatherLocalDataSource.getWeatherForecast(location)
+        if (localData==null){
+            when(val response = weatherRemoteDataSource.getForeCast(location)){
+                is Result.Error -> {
+                    return flow{ emit(response) }.flowOn(ioDispatcher)
+                }
+                is Result.Success ->{
+                    dataSynchronization(foreCastWeatherDto = response.data)
+
+                    localData = weatherLocalDataSource.getWeatherForecast(location)
+                    return flow { emit(Result.Success(localData!!)) }.flowOn(ioDispatcher)
+
+                }
             }
-            is Result.Success -> {
-                dataSynchronization(foreCastWeatherDto = response.data)
-                return flow{
-                    emit(Result.Success(weatherLocalDataSource.getWeatherForecast()))
-                }.flowOn(ioDispatcher)
-            }
-        }
+        } else return flow { emit(Result.Success(localData)) }.flowOn(ioDispatcher)
+
+    }
+
+    override suspend fun addNewLocation(location: String) {
+        weatherLocalDataSource.addLocation(location=location)
+    }
+
+    override suspend fun getCurrentLocation(): String? {
+        return weatherLocalDataSource.getCurrentLocation()
     }
 
     override suspend fun dataSynchronization(
@@ -73,6 +94,34 @@ class WeatherRepositoryImplementation @Inject constructor(
                 val data = foreCastWeatherDto.toForecastLocal(day)
                 weatherLocalDataSource.addForecast(data.first)
                 weatherLocalDataSource.addForecastHours(data.second)
+            }
+        }
+    }
+
+    override suspend fun dataUpdate(location: String) {
+        val currentWeatherResponse = weatherRemoteDataSource.getCurrentWeather(location=location,"yes")
+        val forecastWeatherUpdate = weatherRemoteDataSource.getForeCast(location)
+
+        when(currentWeatherResponse){
+            is Result.Error -> {
+
+            }
+            is Result.Success -> {
+                weatherLocalDataSource.updateCurrentWeather(currentWeatherResponse.data.toCurrentWeatherLocal())
+            }
+        }
+
+        when(forecastWeatherUpdate){
+            is Result.Error -> {
+
+            }
+            is Result.Success -> {
+                val numberOfDays = forecastWeatherUpdate.data.forecastDto.forecastdayDto.size
+                for(day in 0..numberOfDays){
+                    val data = forecastWeatherUpdate.data.toForecastLocal(day)
+                    weatherLocalDataSource.addForecast(data.first)
+                    weatherLocalDataSource.addForecastHours(data.second)
+                }
             }
         }
     }

@@ -6,17 +6,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.weatherman.presentation.homeScreen.HomeScreenRoot
-import com.example.weatherman.presentation.tenDayScreen.ForeCastScreenRoot
+import com.example.weatherman.presentation.forecastScreen.ForeCastScreenRoot
 import com.example.weatherman.presentation.tomorrowScreen.TomorrowScreenRoot
 
 
 @Composable
 fun Navigation(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    //val selected by rememberSaveable { mutableStateOf(Selected()) }
-
     NavHost(navController=navController, startDestination = Routes.Home) {
         composable<Routes.Home> {
             HomeScreenRoot(
@@ -27,16 +25,14 @@ fun Navigation(
         composable<Routes.Tomorrow> {
             TomorrowScreenRoot(
                 toHomeScreen = { navController.navigate(Routes.Home) },
-                toForeCastScreen = { navController.navigate(Routes.Forecast) }
+                toForeCastScreen = { navController.navigate(Routes.Forecast) },
             )
         }
         composable<Routes.Forecast> {
             ForeCastScreenRoot(
                 navigateToTomorrowScreen = { navController.navigate(Routes.Tomorrow) },
-                navigateToHomeScreen = { navController.navigate(Routes.Forecast) }
+                navigateToHomeScreen = { navController.navigate(Routes.Home) },
             )
-
         }
     }
-
 }

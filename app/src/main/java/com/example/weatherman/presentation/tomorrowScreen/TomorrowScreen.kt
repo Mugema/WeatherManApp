@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.weatherman.presentation.components.OnAction
 import com.example.weatherman.presentation.components.Rain
 import com.example.weatherman.presentation.components.SelectedScreen
 import com.example.weatherman.presentation.components.TopBar
@@ -31,11 +32,12 @@ fun TomorrowScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: TomorrowScreenViewModel= hiltViewModel(),
     toHomeScreen:()->Unit = {},
-    toForeCastScreen:()->Unit={}
+    toForeCastScreen:()->Unit={},
 ) {
     TomorrowScreen(
         navigateToHomeScreen = toHomeScreen,
-        navigateToForeCastScreen = toForeCastScreen
+        navigateToForeCastScreen = toForeCastScreen,
+        onAction = viewModel::onAction
     )
     
 }
@@ -44,7 +46,8 @@ fun TomorrowScreenRoot(
 fun TomorrowScreen(
     modifier: Modifier = Modifier,
     navigateToHomeScreen:()->Unit={},
-    navigateToForeCastScreen: () -> Unit={}
+    navigateToForeCastScreen: () -> Unit={},
+    onAction:(OnAction) -> Unit={}
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -54,11 +57,12 @@ fun TomorrowScreen(
             .fillMaxSize()
     ) {
         TopBar(
-            location = "Kampala,Uganda",
+            location = "location",
             isOnline = true,
             toHomeScreen = navigateToHomeScreen,
             toForeCastScreen = navigateToForeCastScreen,
-            selected = SelectedScreen(false,true,false)
+            selected = SelectedScreen(false,true,false),
+            onAction = onAction
         )
         Column(
             modifier = Modifier

@@ -3,6 +3,7 @@ package com.example.weatherman
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,10 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity () : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //enableEdgeToEdge()
+        enableEdgeToEdge()
         setContent {
-//            val viewmodel by viewModels<HomeScreenViewModel>()
-//            val state by viewmodel.homeScreenState.collectAsStateWithLifecycle()
             val viewModel by viewModels<MainActivityViewModel>()
             val loading = viewModel.isLoading.collectAsStateWithLifecycle().value
             WeatherManTheme {

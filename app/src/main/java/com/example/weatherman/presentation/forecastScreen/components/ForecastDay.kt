@@ -1,4 +1,4 @@
-package com.example.weatherman.presentation.tenDayScreen.components
+package com.example.weatherman.presentation.forecastScreen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -15,4 +15,10 @@ interface WeatherRepository  {
         currentWeatherDto: CurrentWeatherDto? = null,
         foreCastWeatherDto: ForeCastWeatherDto? = null
     )
+
+    suspend fun dataUpdate(location: String)
+
+    suspend fun addNewLocation(location:String)
+
+    suspend fun getCurrentLocation():String?
 }

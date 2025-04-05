@@ -1,7 +1,5 @@
 package com.example.weatherman.data.local.models
 
-import androidx.room.Entity
-
 data class LocationLocal(
     val country: String,
     val lat: Double,

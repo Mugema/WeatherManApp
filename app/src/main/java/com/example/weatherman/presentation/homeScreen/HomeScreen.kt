@@ -1,6 +1,7 @@
 package com.example.weatherman.presentation.homeScreen
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.weatherman.presentation.components.ActionBar
+import com.example.weatherman.presentation.components.OnAction
 import com.example.weatherman.presentation.components.SelectedScreen
 import com.example.weatherman.presentation.components.Time
 import com.example.weatherman.presentation.components.TopBar
@@ -59,10 +62,12 @@ fun HomeScreenRoot(
 ) {
     val state = viewModel.homeScreenState.collectAsStateWithLifecycle()
     HomeScreen(
-        homeScreenState =state.value,
-        navigateToForecastScreen=navigateToForecastScreen,
-        navigateToTomorrowScreen = navigateToTomorrowScreen)
-
+        modifier = modifier,
+        homeScreenState = state.value,
+        navigateToForecastScreen = navigateToForecastScreen,
+        navigateToTomorrowScreen = navigateToTomorrowScreen,
+        onAction = viewModel::action,
+    )
 }
 
 @Composable
@@ -70,7 +75,8 @@ fun HomeScreen(
     homeScreenState: HomeScreenUiState,
     modifier: Modifier = Modifier,
     navigateToTomorrowScreen: ()->Unit={},
-    navigateToForecastScreen: () -> Unit={}
+    navigateToForecastScreen: () -> Unit={},
+    onAction: (OnAction)->Unit
 ) {
     val scrollState= rememberScrollState()
     var scrolled by remember{ mutableIntStateOf(0) }
@@ -80,7 +86,7 @@ fun HomeScreen(
     val textColor = Color.Black
 
     Column(
-        modifier=Modifier
+        modifier=modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
@@ -98,10 +104,9 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        ActionBar(location =homeScreenState.location , isOnline = true)
+                        ActionBar(location =homeScreenState.location , isOnline = true, onAction = onAction)
                         Spacer(modifier
                             .padding(8.dp)
-                            //.weight(1f)
                         )
                         Text("Partly Cloudy", fontSize = 20.sp)
                         Row(
@@ -113,16 +118,22 @@ fun HomeScreen(
                             Spacer(Modifier.width(8.dp))
                             AstroDetails(modifier = Modifier.weight(1f).clip(RoundedCornerShape(100)),astroState = sunSet1)
                         }
-
                     }
-
-
                 }
                 else{
-                    TopBar(location = "Kampala", isOnline = true)
-
+                    TopBar(
+                        location = homeScreenState.location,
+                        isOnline = true,
+                        onAction = onAction,
+                        toTomorrowScreen = navigateToTomorrowScreen,
+                        toForeCastScreen = navigateToForecastScreen
+                    )
                 }
             }
+        }
+        Spacer(modifier=Modifier.height(4.dp))
+        AnimatedVisibility(visible = homeScreenState.isLoading) {
+            LinearProgressIndicator(modifier=Modifier.fillMaxWidth())
         }
 
         Column(
@@ -132,6 +143,7 @@ fun HomeScreen(
                 .verticalScroll(scrollState)
         ) {
             Time(
+                modifier = Modifier.fillMaxWidth(),
                 onTomorrowClicked = navigateToTomorrowScreen,
                 onForeCastClicked = navigateToForecastScreen,
                 selected = SelectedScreen(true,false,false)
@@ -183,7 +195,9 @@ val state = HomeScreenUiState(
 @Composable
 private fun HomeScreenPreview() {
     WeatherManTheme {
-        HomeScreen(homeScreenState = state){}
+        HomeScreen(
+            homeScreenState = state,
+        ){}
     }
 
 }

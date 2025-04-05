@@ -3,7 +3,6 @@ package com.example.weatherman.data.local.models
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.weatherman.domain.models.Condition
 
 @Entity
 data class HourLocal(

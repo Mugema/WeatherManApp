@@ -8,4 +8,5 @@ import kotlinx.coroutines.flow.asStateFlow
 class MainActivityViewModel:ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+
 }

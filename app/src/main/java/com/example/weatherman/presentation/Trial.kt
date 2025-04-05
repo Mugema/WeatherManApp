@@ -2,26 +2,30 @@ package com.example.weatherman.presentation
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.drawText
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.room.util.TableInfo
+import com.example.weatherman.R
 import com.example.weatherman.ui.theme.WeatherManTheme
 
 @Composable
@@ -72,7 +76,9 @@ fun Trial(path:List<DataPoints>) {
 //    }
 
     Canvas(
-        modifier = Modifier.size(500.dp).background(Color.White)
+        modifier = Modifier
+            .size(500.dp)
+            .background(Color.White)
     ) {
         val path = Path()
 
@@ -117,53 +123,4 @@ private fun PreviewTrial() {
     WeatherManTheme {
         Trial(path=path)
     }
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//val radius=this.size.width/2
-//path.arcTo(
-//Rect(
-//center.x,
-//center.y,
-//center.x+this.size.width/2,
-//center.y+this.size.width/2
-//),
-//startAngleDegrees = 270f,
-//sweepAngleDegrees = -180f,
-//forceMoveTo = false
-//)
-//path.arcTo(
-//Rect(
-//center.x - radius / 2,
-//center.y,
-//center.x + radius / 2,
-//center.y + radius
-//),
-//270f,
-//-180f,
-//false
-//)
-//
-//drawPath(path,Color.Black)

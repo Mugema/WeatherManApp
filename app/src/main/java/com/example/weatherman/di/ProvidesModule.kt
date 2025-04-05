@@ -2,6 +2,7 @@ package com.example.weatherman.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.weatherman.data.local.PrefUtil
 import com.example.weatherman.data.local.WeatherDb
 import com.example.weatherman.data.local.dao.CurrentWeatherDao
 import com.example.weatherman.data.local.dao.ForecastDao
@@ -77,4 +78,9 @@ object ProvidesModule {
         return database.getHourDao()
     }
 
+    @Provides
+    @Singleton
+    fun providesDataStore(@ApplicationContext context:Context):PrefUtil{
+        return PrefUtil(context)
+    }
 }

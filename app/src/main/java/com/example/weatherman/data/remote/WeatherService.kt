@@ -4,8 +4,6 @@ import com.example.weatherman.data.remote.dto.CurrentWeatherDto
 import com.example.weatherman.data.remote.dto.ForeCastWeatherDto
 import com.example.weatherman.domain.DataErrors
 import com.example.weatherman.domain.Result
-import com.example.weatherman.domain.models.CurrentWeather
-import com.example.weatherman.domain.models.ForeCastWeather
 
 interface WeatherService {
 

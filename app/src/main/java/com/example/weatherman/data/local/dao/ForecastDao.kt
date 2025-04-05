@@ -12,6 +12,6 @@ interface ForecastDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addForecast(forecast:ForecastLocal)
 
-    @Query("SELECT * FROM FORECASTLOCAL JOIN HourLocal ON HourLocal.date")
-    suspend fun getForeCast():Map<ForecastLocal,List<HourLocal>>
+    @Query("SELECT * FROM FORECASTLOCAL JOIN HourLocal ON HourLocal.date WHERE name =:city")
+    suspend fun getForeCast(city:String):Map<ForecastLocal,List<HourLocal>>
 }

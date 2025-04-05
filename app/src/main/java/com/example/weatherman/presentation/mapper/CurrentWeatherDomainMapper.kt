@@ -5,6 +5,7 @@ import com.example.weatherman.presentation.models.AirQualityUi
 
 fun AirQuality.toAirQualityUi():AirQualityUi{
     val total = carbonMonoxide+nitrogenDioxide+ozone+sulphurDioxide
+
     return AirQualityUi(
         carbonMonoxide = (carbonMonoxide/total).toFloat(),
         nitrogenDioxide = (nitrogenDioxide/total).toFloat(),
