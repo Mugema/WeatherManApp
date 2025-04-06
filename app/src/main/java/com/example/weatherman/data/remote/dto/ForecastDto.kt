@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ForecastDto(
-    val forecastdayDto: List<ForecastdayDto>
+    val forecastday: List<ForecastdayDto>
 )

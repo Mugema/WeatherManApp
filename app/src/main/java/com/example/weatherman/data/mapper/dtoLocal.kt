@@ -77,21 +77,21 @@ fun CurrentWeatherDto.getLocation():LocationLocal {
 
 fun ForeCastWeatherDto.toForecastLocal(dateNumber:Int): Pair<ForecastLocal,List<HourLocal>> {
     val location= LocationLocal(
-        country = this.locationDto.country,
-        lat = this.locationDto.lat,
-        localtime = this.locationDto.localtime,
-        lon = this.locationDto.lon,
-        name = this.locationDto.name,
-        region = this.locationDto.region,
-        tz_id = this.locationDto.tz_id
+        country = this.location.country,
+        lat = this.location.lat,
+        localtime = this.location.localtime,
+        lon = this.location.lon,
+        name = this.location.name,
+        region = this.location.region,
+        tz_id = this.location.tz_id
     )
 
-    val date = this.forecastDto.forecastdayDto[dateNumber].date
-    val astro = this.forecastDto.forecastdayDto[dateNumber].getAstro()
-    val day = this.forecastDto.forecastdayDto[dateNumber].getDay()
+    val date = this.forecast.forecastday[dateNumber].date
+    val astro = this.forecast.forecastday[dateNumber].getAstro()
+    val day = this.forecast.forecastday[dateNumber].getDay()
     val hourList:MutableList<HourLocal> = mutableListOf<HourLocal>().also {
-        for (hour in 0..24){
-            it.add(this.forecastDto.forecastdayDto[dateNumber].hourDto[hour].toHourLocal(date))
+        for (hour in 0..23){
+            it.add(this.forecast.forecastday[dateNumber].hour[hour].toHourLocal(date))
         }
     }
 
@@ -106,14 +106,14 @@ fun ForeCastWeatherDto.toForecastLocal(dateNumber:Int): Pair<ForecastLocal,List<
 
 fun ForecastdayDto.getAstro():AstroLocal{
     return AstroLocal(
-        isMoonUp = this.astroDto.is_moon_up !=0 ,
-        isSunUp = this.astroDto.is_sun_up != 0,
-        moonIllumination = this.astroDto.moon_illumination,
-        moonPhase = this.astroDto.moon_phase,
-        moonrise = this.astroDto.moonrise,
-        moonSet = this.astroDto.moonset,
-        sunrise = this.astroDto.sunrise,
-        sunset = this.astroDto.sunset
+        isMoonUp = this.astro.is_moon_up !=0 ,
+        isSunUp = this.astro.is_sun_up != 0,
+        moonIllumination = this.astro.moon_illumination,
+        moonPhase = this.astro.moon_phase,
+        moonrise = this.astro.moonrise,
+        moonSet = this.astro.moonset,
+        sunrise = this.astro.sunrise,
+        sunset = this.astro.sunset
     )
 }
 

@@ -4,9 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(primaryKeys = ["date","time"])
 data class HourLocal(
-    @PrimaryKey val date:String,
+    val date:String,
+    val time: String,
     val chanceOfRain: Int,
     val chanceOfSnow: Int,
     val cloud: Int,
@@ -19,7 +20,6 @@ data class HourLocal(
     val pressureInInches: Double,
     val snowInCm: Double,
     val temperatureInC: Double,
-    val time: String,
     val uv: Double,
     val visualInKm: Double,
     val willItRain: Int,

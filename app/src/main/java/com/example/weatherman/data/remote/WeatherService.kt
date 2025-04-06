@@ -14,8 +14,8 @@ interface WeatherService {
 
     suspend fun getForeCast(
         location: String,
-        airQuality: String = "no",
-        days: Int = 1
+        airQuality: String="yes",
+        days: Int = 3
     ):Result<ForeCastWeatherDto,DataErrors.RemoteError>
 
 }

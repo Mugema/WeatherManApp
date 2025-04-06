@@ -1,5 +1,6 @@
 package com.example.weatherman.data.local
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.weatherman.data.local.dao.CurrentWeatherDao
@@ -11,7 +12,7 @@ import com.example.weatherman.data.local.models.HourLocal
 
 @Database(
     entities = [CurrentWeatherLocal::class, HourLocal::class, ForecastLocal::class],
-    version = 1,
+    version = 2,
 )
 abstract class WeatherDb(): RoomDatabase() {
 

@@ -1,5 +1,6 @@
 package com.example.weatherman.data.remote.dto
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -9,7 +10,7 @@ data class DayDto(
     val avgtemp_f: Double,
     val avgvis_km: Double,
     val avgvis_miles: Double,
-    val conditionDto: ConditionDto,
+    @SerialName("condition")val conditionDto: ConditionDto,
     val daily_chance_of_rain: Int,
     val daily_chance_of_snow: Int,
     val daily_will_it_rain: Int,

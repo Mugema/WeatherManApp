@@ -1,5 +1,6 @@
 package com.example.weatherman.data.local
 
+import android.util.Log
 import com.example.weatherman.data.local.dao.CurrentWeatherDao
 import com.example.weatherman.data.local.dao.ForecastDao
 import com.example.weatherman.data.local.dao.HourDao
@@ -52,20 +53,22 @@ class WeatherLocalDataSource @Inject constructor(
       }
    }
 
-   private suspend fun getHours(date:String):List<Hour>{
+   suspend fun getHours(date:String):List<Hour>{
       return hourDao.getHours(date).map { hour-> hour.toHour()}
    }
 
    suspend fun getWeatherForecast(location:String): ForeCastWeather?{
+      Log.d("Local data source",location)
       val forecast:List<ForeCastWeather>
       try {
          forecast= foreCastDao.getForeCast(location).map { entry ->
             entry.key.toForecastWeather(entry.value.map { it.toHour() })
          }
-      } catch (error:NullPointerException){
-         return null
-      }
-      return forecast.first()
+      } catch (error:NullPointerException){ return null }
+
+      return try {
+         forecast.first()
+      }catch (error:NoSuchElementException){ null }
    }
 
    suspend fun getCurrentLocation(key:String="currentLocation"):String? {

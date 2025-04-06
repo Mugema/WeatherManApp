@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,6 +16,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.weatherman.presentation.components.ForeScreenAction
 import com.example.weatherman.presentation.components.OnAction
 import com.example.weatherman.presentation.components.SelectedScreen
 import com.example.weatherman.presentation.components.TopBar
@@ -29,19 +32,24 @@ fun ForeCastScreenRoot(
     navigateToHomeScreen: () -> Unit={},
 ) {
     ForeCastScreen(
+        modifier = modifier,
         navigateToTomorrowScreen = navigateToTomorrowScreen,
         navigateToHomeScreen = navigateToHomeScreen,
         onAction = viewModel::actionBarEvent,
+        state = viewModel.state.collectAsStateWithLifecycle().value,
+        onDayClick = viewModel::forecastScreenAction
+
     )
 }
 
 @Composable
 fun ForeCastScreen(
+    state: ForecastScreenState,
     modifier: Modifier = Modifier,
-    navigateToTomorrowScreen: ()->Unit={},
-    navigateToHomeScreen: () -> Unit={},
-    onAction:(OnAction)->Unit,
-   // state:
+    navigateToTomorrowScreen: ()->Unit ={},
+    navigateToHomeScreen: () -> Unit ={},
+    onDayClick: (ForeScreenAction)->Unit ={},
+    onAction:(OnAction)->Unit ={}
 ) {
     Column(
         modifier=modifier.fillMaxSize()
@@ -53,14 +61,16 @@ fun ForeCastScreen(
             toHomeScreen = navigateToHomeScreen,
             selected = SelectedScreen(false, false, true),
             onAction = onAction,
-            location = ""
-
+            location = state.location
         )
         Spacer(modifier=Modifier.height(4.dp))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             item {  }
             items(10){
-                ForecastDay(modifier=Modifier.padding(start = 8.dp, end = 8.dp))
+                ForecastDay(
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    onClick = onDayClick
+                )
             }
         }
     }
@@ -71,6 +81,6 @@ fun ForeCastScreen(
 @Composable
 fun PreviewForecastScreen(){
     WeatherManTheme {
-        ForeCastScreen( onAction = {})
+        ForeCastScreen( state = ForecastScreenState(), onAction = {})
     }
 }

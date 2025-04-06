@@ -57,6 +57,7 @@ object ProvidesModule {
     fun providesWeatherDatabase(@ApplicationContext context: Context): WeatherDb{
         return Room
             .databaseBuilder(context, WeatherDb::class.java,"weatherDb")
+            .fallbackToDestructiveMigration()
             .build()
     }
 
