@@ -35,6 +35,7 @@ fun TomorrowScreenRoot(
     toForeCastScreen:()->Unit={},
 ) {
     TomorrowScreen(
+        modifier=modifier,
         navigateToHomeScreen = toHomeScreen,
         navigateToForeCastScreen = toForeCastScreen,
         onAction = viewModel::onAction

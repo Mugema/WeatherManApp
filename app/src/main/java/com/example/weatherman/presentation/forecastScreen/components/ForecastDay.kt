@@ -27,11 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherman.R
 import com.example.weatherman.presentation.components.ForeScreenAction
-import com.example.weatherman.presentation.components.OnAction
 import com.example.weatherman.ui.theme.WeatherManTheme
 
 data class DayState(
-    val icon:String="",
+    val icon:Int=0,
     val day:String="Monday,February 2025",
     val condition:String ="Partly Cloudy"
 )
@@ -52,10 +51,9 @@ fun ForecastDay(
             .fillMaxWidth()
             .background(Color.White)
             .padding(16.dp)
-
     ) {
         Image(modifier = Modifier.size(64.dp),
-            painter = painterResource(R.drawable.sun_1_),
+            painter = painterResource(R.drawable.barometer),
             contentDescription = null)
         Column {
             Text(dayState.day, fontSize = 20.sp)

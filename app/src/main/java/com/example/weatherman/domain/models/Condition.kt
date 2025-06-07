@@ -1,7 +1,7 @@
 package com.example.weatherman.domain.models
 
 data class Condition(
-    val code: Int,
-    val icon: String,
+    val date: String,
+    val icon: Int,
     val text: String
 )

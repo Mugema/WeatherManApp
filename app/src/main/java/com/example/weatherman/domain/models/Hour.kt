@@ -22,4 +22,6 @@ data class Hour(
     val windDirection: String,
     val windInKph: Double,
     val windChill: Double,
+    val lat: Double,
+    val lon: Double,
 )

@@ -2,15 +2,16 @@ package com.example.weatherman.data.local.models
 
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(primaryKeys = ["date","time"])
+@Entity(primaryKeys = ["date","time","lon","lat"])
 data class HourLocal(
     val date:String,
     val time: String,
     val chanceOfRain: Int,
     val chanceOfSnow: Int,
     val cloud: Int,
+    val lat: Double,
+    val lon: Double,
     @Embedded val condition: ConditionLocal,
     val feelsLike: Double,
     val windStrength: Double,

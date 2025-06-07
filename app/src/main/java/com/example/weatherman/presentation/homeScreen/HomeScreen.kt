@@ -1,24 +1,20 @@
 package com.example.weatherman.presentation.homeScreen
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,8 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,8 +47,6 @@ import com.example.weatherman.presentation.models.Pressure
 import com.example.weatherman.presentation.models.Temperature
 import com.example.weatherman.presentation.models.Uv
 import com.example.weatherman.presentation.models.Wind
-import com.example.weatherman.presentation.tomorrowScreen.components.AstroDetails
-import com.example.weatherman.presentation.tomorrowScreen.components.sunSet1
 import com.example.weatherman.ui.theme.WeatherManTheme
 
 
@@ -88,13 +85,16 @@ fun HomeScreen(
     Column(
         modifier=modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color(0XFFE8EAE9))
     ) {
         Column(
             modifier = Modifier
+                .shadow(elevation = 4.dp,RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp),)
                 .clip(if (scrolled==0) RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp) else RectangleShape)
+
                 .animateContentSize()
-                .background(Color.LightGray.copy(alpha = 1f, green = 1f))
+                .background(Color(0XFFE8EAE9))
+
         ) {
             AnimatedContent(
                 targetState = scrolled
@@ -108,15 +108,19 @@ fun HomeScreen(
                         Spacer(modifier
                             .padding(8.dp)
                         )
-                        Text("Partly Cloudy", fontSize = 20.sp)
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(16.dp)
-                        ){
-                            AstroDetails(modifier = Modifier.weight(1f).clip(RoundedCornerShape(100)),astroState = sunSet1)
-                            Spacer(Modifier.width(8.dp))
-                            AstroDetails(modifier = Modifier.weight(1f).clip(RoundedCornerShape(100)),astroState = sunSet1)
+                        Column(
+                            horizontalAlignment = Alignment.Start,
+                            modifier = Modifier.align(Alignment.Start).padding(start = 32.dp,bottom = 16.dp)
+                        ) {
+                            Text(
+                                "Partly Cloudy",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                textAlign = TextAlign.Left,
+                            )
+                            Text("Sunset 6:25 PM")
+                            Text("Sunrise 6:25 AM")
+
                         }
                     }
                 }
@@ -132,9 +136,9 @@ fun HomeScreen(
             }
         }
         Spacer(modifier=Modifier.height(4.dp))
-        AnimatedVisibility(visible = homeScreenState.isLoading) {
-            LinearProgressIndicator(modifier=Modifier.fillMaxWidth())
-        }
+//        AnimatedVisibility(visible = homeScreenState.isLoading) {
+//            LinearProgressIndicator(modifier=Modifier.fillMaxWidth())
+//        }
 
         Column(
             Modifier

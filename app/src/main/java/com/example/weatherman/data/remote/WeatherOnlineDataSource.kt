@@ -1,5 +1,6 @@
 package com.example.weatherman.data.remote
 
+import com.example.weatherman.BuildConfig
 import com.example.weatherman.data.remote.dto.CurrentWeatherDto
 import com.example.weatherman.data.remote.dto.ForeCastWeatherDto
 import com.example.weatherman.data.remote.util.safeCall
@@ -15,7 +16,7 @@ import javax.inject.Inject
 class WeatherOnlineDataSource @Inject constructor(
     private val client:HttpClient
 ):WeatherService {
-    private val API_KEY="193403fa4f32439fa0d130755252901"
+    private val API_KEY= BuildConfig.ApiKey
 
     override suspend fun getCurrentWeather(
         location: String,

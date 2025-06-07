@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,7 +36,7 @@ class HomeScreenViewModel @Inject constructor(
     private fun getCurrentLocation(){
         viewModelScope.launch {
             Log.d("Data Store","${weatherRepository.getCurrentLocation()}")
-            _currentLocation = weatherRepository.getCurrentLocation() ?: "Kampala"
+            weatherRepository.getCurrentLocation().collect { _currentLocation = it.city  }
             searchQuery = _currentLocation
         }
     }
@@ -45,9 +44,9 @@ class HomeScreenViewModel @Inject constructor(
         return location.replaceFirstChar { it.titlecaseChar() }
     }
 
-    private fun upDateCurrentLocation(location: String){
+    private fun upDateCurrentLocation(location: String,lat: Double,lon: Double){
         viewModelScope.launch {
-            weatherRepository.addNewLocation(cleanLocation(location))
+            weatherRepository.addNewLocation(location=cleanLocation(location),lat=lat,lon = lon)
             Log.d("CurrentLocation ",_currentLocation)
         }
     }
@@ -96,7 +95,11 @@ class HomeScreenViewModel @Inject constructor(
                             pressure = Pressure(attrValue = "${data.pressure} Kpa"),
                             uv =  Uv(attrValue = data.uv.toString())
                         ) }
-                        upDateCurrentLocation(location)
+                        upDateCurrentLocation(
+                            location,
+                            lat =data.location.lat,
+                            lon = data.location.lon
+                        )
                         _homeScreenState.update { it.copy(isLoading = false) }
                     }
                 }

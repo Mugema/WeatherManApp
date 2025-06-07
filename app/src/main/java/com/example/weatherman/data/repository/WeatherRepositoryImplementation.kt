@@ -11,7 +11,9 @@ import com.example.weatherman.domain.DataErrors
 import com.example.weatherman.domain.Result
 import com.example.weatherman.domain.WeatherRepository
 import com.example.weatherman.domain.models.Astro
+import com.example.weatherman.domain.models.Condition
 import com.example.weatherman.domain.models.CurrentWeather
+import com.example.weatherman.domain.models.DataStoreLocation
 import com.example.weatherman.domain.models.Day
 import com.example.weatherman.domain.models.ForeCastWeather
 import com.example.weatherman.domain.models.Hour
@@ -26,6 +28,7 @@ class WeatherRepositoryImplementation @Inject constructor(
     private val weatherLocalDataSource: WeatherLocalDataSource,
     private val ioDispatcher: CoroutineDispatcher
 ):WeatherRepository {
+
 
     override suspend fun getCurrentWeather(location:String): Flow<Result<CurrentWeather, DataErrors.RemoteError>> {
         val local = weatherLocalDataSource.getCurrentWeather(location)
@@ -69,11 +72,11 @@ class WeatherRepositoryImplementation @Inject constructor(
 
     }
 
-    override suspend fun addNewLocation(location: String) {
-        weatherLocalDataSource.addLocation(location=location)
+    override suspend fun addNewLocation(location: String,lat: Double,lon: Double) {
+        weatherLocalDataSource.addLocation(location=location, lat = lat, lon = lon)
     }
 
-    override suspend fun getCurrentLocation(): String? {
+    override suspend fun getCurrentLocation(): Flow<DataStoreLocation> {
         return weatherLocalDataSource.getCurrentLocation()
     }
 
@@ -114,7 +117,7 @@ class WeatherRepositoryImplementation @Inject constructor(
             }
             is Result.Success -> {
                 val numberOfDays = forecastWeatherUpdate.data.forecast.forecastday.size
-                for(day in 0..<numberOfDays){
+                for(day in 0..<numberOfDays-1){
                     val data = forecastWeatherUpdate.data.toForecastLocal(day)
                     weatherLocalDataSource.addForecast(data.first)
                     weatherLocalDataSource.addForecastHours(data.second)
@@ -123,8 +126,8 @@ class WeatherRepositoryImplementation @Inject constructor(
         }
     }
 
-    override suspend fun getHourData(date: String): List<Hour> {
-        return weatherLocalDataSource.getHours(date)
+    override suspend fun getHourData(date: String,lan: Double,lon: Double): List<Hour> {
+        return weatherLocalDataSource.getHours(date,lan,lon)
     }
 
     override suspend fun getAstroData(date: String): Astro? {
@@ -133,5 +136,9 @@ class WeatherRepositoryImplementation @Inject constructor(
 
     override suspend fun getDayDetails(date: String): Day? {
         return weatherLocalDataSource.getWeatherForecast(date)?.day
+    }
+
+    override  fun getForecastConditions(): Flow<List<Condition>> {
+        return weatherLocalDataSource.getForecastConditions()
     }
 }

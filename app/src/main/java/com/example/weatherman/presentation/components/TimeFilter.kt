@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weatherman.R
 import com.example.weatherman.ui.theme.WeatherManTheme
-import com.example.weatherman.ui.theme.primaryColor
+import com.example.weatherman.ui.theme.primaryLight
 
 @Composable
 fun Time(
@@ -46,7 +46,7 @@ fun Time(
             modifier = Modifier
                 .shadow(4.dp, RoundedCornerShape(40))
                 .clip(RoundedCornerShape(40))
-                .background(if (selected.todayScreen) primaryColor else Color.White)
+                .background(if (selected.todayScreen) primaryLight else Color.White)
                 .clickable { onTodayClicked() }
                 .padding(start = 8.dp, end = 8.dp)
         ) {
@@ -61,7 +61,7 @@ fun Time(
             modifier = Modifier
                 .shadow(4.dp, RoundedCornerShape(40),true,Color.Black)
                 .clip(RoundedCornerShape(40))
-                .background(if (selected.tomorrowScreen) primaryColor else Color.White)
+                .background(if (selected.tomorrowScreen) primaryLight else Color.White)
                 .clickable { onTomorrowClicked() }
                 .padding(start = 8.dp, end = 8.dp)
         ) { Text(stringResource(R.string.tomorrow),
@@ -75,7 +75,7 @@ fun Time(
             modifier = Modifier
                 .shadow(4.dp, RoundedCornerShape(40),true,Color.Black)
                 .clip(RoundedCornerShape(40))
-                .background(if (selected.foreCastScreen) primaryColor else Color.White)
+                .background(if (selected.foreCastScreen) primaryLight else Color.White)
                 .clickable { onForeCastClicked() }
                 .padding(start = 8.dp, end = 8.dp)
         ) { Text(stringResource(R.string.three_Days),

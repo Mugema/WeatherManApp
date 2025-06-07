@@ -19,12 +19,12 @@ class TomorrowScreenViewModel @Inject constructor(
 
     private fun getCurrentLocation(){
         viewModelScope.launch {
-            currentLocation = weatherRepository.getCurrentLocation() ?: "Kampala"
+            weatherRepository.getCurrentLocation().collect { currentLocation = it.city ?: "Kampala" }
         }
     }
 
     private fun upDateCurrentLocation(location: String){
-        viewModelScope.launch { weatherRepository.addNewLocation(location) }
+        viewModelScope.launch { weatherRepository.addNewLocation(location,43.4,33.5) }
     }
 
     init {

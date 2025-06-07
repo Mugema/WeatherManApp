@@ -7,13 +7,19 @@ import com.example.weatherman.data.local.dao.HourDao
 import com.example.weatherman.data.local.models.CurrentWeatherLocal
 import com.example.weatherman.data.local.models.ForecastLocal
 import com.example.weatherman.data.local.models.HourLocal
+import com.example.weatherman.data.local.models.toConditions
 import com.example.weatherman.data.mapper.toCurrentWeather
 import com.example.weatherman.data.mapper.toForecastWeather
 import com.example.weatherman.data.mapper.toHour
+import com.example.weatherman.domain.models.Condition
 import com.example.weatherman.domain.models.CurrentWeather
+import com.example.weatherman.domain.models.DataStoreLocation
 import com.example.weatherman.domain.models.ForeCastWeather
 import com.example.weatherman.domain.models.Hour
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -53,8 +59,8 @@ class WeatherLocalDataSource @Inject constructor(
       }
    }
 
-   suspend fun getHours(date:String):List<Hour>{
-      return hourDao.getHours(date).map { hour-> hour.toHour()}
+   suspend fun getHours(date:String,lat: Double,lon: Double):List<Hour>{
+      return hourDao.getHours(date,lat,lon).map { hour-> hour.toHour()}
    }
 
    suspend fun getWeatherForecast(location:String): ForeCastWeather?{
@@ -64,19 +70,23 @@ class WeatherLocalDataSource @Inject constructor(
          forecast= foreCastDao.getForeCast(location).map { entry ->
             entry.key.toForecastWeather(entry.value.map { it.toHour() })
          }
-      } catch (error:NullPointerException){ return null }
+      } catch (_:NullPointerException){ return null }
 
       return try {
          forecast.first()
-      }catch (error:NoSuchElementException){ null }
+      }catch (_:NoSuchElementException){ null }
    }
 
-   suspend fun getCurrentLocation(key:String="currentLocation"):String? {
-      return dataStore.getLocation(key)
+   fun getCurrentLocation(key:String="currentLocation"): Flow<DataStoreLocation> {
+      return dataStore.getLocation(key).flowOn(ioDispatcher)
 
    }
-   suspend fun addLocation(key:String="currentLocation",location:String){
-      dataStore.addLocation(key,location)
+   suspend fun addLocation(key:String="currentLocation",location:String,lat: Double,lon: Double){
+      dataStore.addLocation(key,location,lat,lon)
 
+   }
+
+   fun getForecastConditions(): Flow<List<Condition>> {
+         return foreCastDao.getCondition().map { it.map { it.toConditions() } }
    }
 }

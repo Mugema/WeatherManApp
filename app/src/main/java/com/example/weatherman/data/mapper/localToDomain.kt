@@ -43,8 +43,8 @@ fun CurrentWeatherLocal.toCurrentWeather(): CurrentWeather {
 
 fun ConditionLocal.toCondition(): Condition {
     return Condition(
-        code = code,
-        icon = icon,
+        date = code.toString(),
+        icon = code,
         text = text,
     )
 }
@@ -102,7 +102,9 @@ fun HourLocal.toHour():Hour{
         windDegree = this.windDegree,
         windDirection = this.windDirection,
         windInKph = this.windInKph,
-        windChill = this.windChill
+        windChill = this.windChill,
+        lon = this.lon,
+        lat = this.lat
     )
 }
 

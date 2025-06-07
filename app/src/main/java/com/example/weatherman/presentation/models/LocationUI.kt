@@ -1,6 +1,6 @@
 package com.example.weatherman.presentation.models
 
-data class Location(
+data class LocationUI(
     val country: String,
     val lat: Double,
     val localtime: String,

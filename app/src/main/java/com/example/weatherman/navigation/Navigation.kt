@@ -5,8 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.weatherman.presentation.homeScreen.HomeScreenRoot
 import com.example.weatherman.presentation.forecastScreen.ForeCastScreenRoot
+import com.example.weatherman.presentation.homeScreen.HomeScreenRoot
 import com.example.weatherman.presentation.tomorrowScreen.TomorrowScreenRoot
 
 

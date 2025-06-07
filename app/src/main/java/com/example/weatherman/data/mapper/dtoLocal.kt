@@ -91,7 +91,7 @@ fun ForeCastWeatherDto.toForecastLocal(dateNumber:Int): Pair<ForecastLocal,List<
     val day = this.forecast.forecastday[dateNumber].getDay()
     val hourList:MutableList<HourLocal> = mutableListOf<HourLocal>().also {
         for (hour in 0..23){
-            it.add(this.forecast.forecastday[dateNumber].hour[hour].toHourLocal(date))
+            it.add(this.forecast.forecastday[dateNumber].hour[hour].toHourLocal(date, lat = this.location.lat, lon = this.location.lon))
         }
     }
 
@@ -143,7 +143,7 @@ fun ForecastdayDto.getDay():DayLocal{
     )
 }
 
-fun HourDto.toHourLocal(date:String): HourLocal {
+fun HourDto.toHourLocal(date:String,lat: Double,lon: Double,): HourLocal {
     return HourLocal(
         date = date,
         chanceOfRain = chance_of_rain,
@@ -170,6 +170,8 @@ fun HourDto.toHourLocal(date:String): HourLocal {
         windDegree = wind_degree,
         windDirection = wind_dir,
         windInKph = wind_kph,
-        windChill = windchill_c
+        windChill = windchill_c,
+        lat = lat,
+        lon = lon
     )
 }

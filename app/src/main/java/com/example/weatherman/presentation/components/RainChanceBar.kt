@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.weatherman.ui.theme.WeatherManTheme
-import com.example.weatherman.ui.theme.baseColor
+import com.example.weatherman.ui.theme.primaryLight
 
 @Composable
 fun RainChance(modifier: Modifier = Modifier,time:String,percentage:Int) {
@@ -36,7 +36,7 @@ fun RainChance(modifier: Modifier = Modifier,time:String,percentage:Int) {
         ){
             Box(modifier=Modifier
                 .weight(coloredWeight)
-                .background(baseColor, shape = RoundedCornerShape(32.dp))
+                .background(primaryLight, shape = RoundedCornerShape(32.dp))
                 .fillMaxWidth()
                 .height(20.dp)
             )

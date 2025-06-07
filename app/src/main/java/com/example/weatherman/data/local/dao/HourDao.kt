@@ -10,7 +10,7 @@ interface HourDao {
     @Insert
     suspend fun addHours(hourLocal: List<HourLocal>)
 
-    @Query("SELECT * FROM hourlocal WHERE date = :date")
-    suspend fun getHours(date:String):List<HourLocal>
+    @Query("SELECT * FROM hourlocal WHERE date = :date AND lon = :lon AND lat = :lat  ")
+    suspend fun getHours(date:String,lon: Double,lat: Double):List<HourLocal>
 
 }

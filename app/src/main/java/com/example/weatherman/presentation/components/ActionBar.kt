@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,16 +16,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -67,8 +64,9 @@ fun ActionBar(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(16.dp)
-                .clip(RoundedCornerShape(50))
+                .shadow(4.dp,RoundedCornerShape(50))
                 .background(Color.White)
+                .clip(RoundedCornerShape(50))
                 .weight(2f)
         )  {
             Icon(
@@ -87,18 +85,9 @@ fun ActionBar(
                 keyboardActions = KeyboardActions(onSearch = {
                     focusManager.clearFocus()
                     onAction(OnAction.MakeSearch(location)) })
-                )
-        }
-        IconButton(
-            onClick = {},
-            colors = IconButtonDefaults.iconButtonColors().copy(contentColor = Color.Black),
-            modifier = Modifier.weight(0.5f)
-        ) {
-            Icon(
-                Icons.Default.Menu,null,
-                modifier = Modifier.fillMaxSize())
-        }
+            )
 
+        }
     }
     
 }

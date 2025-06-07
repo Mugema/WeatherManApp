@@ -4,7 +4,7 @@ data class Hour(
     val chanceOfRain: Int,
     val chanceOfSnow: Int,
     val cloud: Int,
-    val condition: Condition,
+    val condition: ConditionUI,
     val feelsLike: Double,
     val windStrength: Double,
     val humidity: Int,

@@ -3,7 +3,7 @@ package com.example.weatherman.presentation.models
 data class CurrentWeather(
     val airQualityUi: AirQualityUi,
     val cloud: Int, //cloud cover as a percentage
-    val condition: Condition,
+    val condition: ConditionUI,
     val feelsLike: Double,
     val gust: Double,
     val humidity: Int,
@@ -18,5 +18,5 @@ data class CurrentWeather(
     val windDirection: String,
     val windSpeed: Double,
     val windChill: Double,
-    val location: Location
+    val location: LocationUI
 )

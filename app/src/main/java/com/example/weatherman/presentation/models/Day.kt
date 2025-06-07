@@ -4,7 +4,7 @@ data class Day(
     val avgHumidity: Int,
     val avgTemperature: Double,
     val avgVisibility: Double,
-    val condition: Condition,
+    val condition: ConditionUI,
     val chanceOfRain: Int,
     val chanceOfSnow: Int,
     val willItRain: Boolean,
